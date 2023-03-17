@@ -1,0 +1,152 @@
+.chart-container {
+  position: relative;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+@mixin tooltip-base {
+  display: inline-block;
+  position: absolute;
+  background-color: white;
+  font-size: 1.2rem;
+  border: 1px solid #c7cfd5;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 0.5rem;
+  z-index: 1500;
+  width: fit-content;
+  height: fit-content;
+  white-space: nowrap;
+  padding-bottom: 1rem;
+}
+
+@mixin tooltip-top-before() {
+  content: " ";
+  position: absolute;
+  top: 100%;
+  margin-left: -6px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: grey transparent transparent transparent;
+}
+
+@mixin tooltip-top-after() {
+  content: " ";
+  position: absolute;
+  top: 100%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: white transparent transparent transparent;
+}
+
+.tooltip-font {
+  color: black;
+  font-size: 1.2rem;
+}
+
+.tooltip-top {
+  &-center {
+    opacity: 0;
+    @include tooltip-base();
+    &::before {
+      @include tooltip-top-before();
+      left: 50%;
+    }
+    &::after {
+      @include tooltip-top-after();
+      left: 50%;
+    }
+  }
+
+  &-right {
+    @include tooltip-base();
+    &::before {
+      @include tooltip-top-before();
+      left: 90%;
+    }
+    &::after {
+      @include tooltip-top-after();
+      left: 90%;
+    }
+  }
+
+  &-right {
+    @include tooltip-base();
+    &::before {
+      @include tooltip-top-before();
+      left: 10%;
+    }
+    &::after {
+      @include tooltip-top-after();
+      left: 10%;
+    }
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.box {
+  height: 1.5rem;
+  width: 1.5rem;
+  clear: both;
+  border-radius: 4px;
+  margin-right: 3px;
+  transform: translateY(3px);
+}
+
+.legend {
+  &-container {
+    padding-left: 8rem;
+    flex-wrap: wrap;
+    display: flex;
+  }
+
+  &-item {
+    padding-right: 2rem;
+  }
+
+  &-text {
+    color: #17181a;
+    font-size: 1.5rem;
+
+    &:hover {
+      font-weight: 600;
+    }
+
+    &--active {
+      color: #17181a;
+    }
+
+    &--inactive {
+      color: #b0b9c0;
+    }
+  }
+}
+
+.icon-container {
+  width: 2rem;
+  padding-left: 0.5rem;
+}
+
+.info_icon {
+  height: 1.5rem;
+  width: 1.5rem;
+  transform: translateY(0.5rem);
+}
+
+.tooltop-row {
+  height: 1.6rem;
+}
+
+.padding {
+  &-bottom {
+    &-16 {
+      padding-bottom: 16px;
+    }
+  }
+}

@@ -1,0 +1,49 @@
+<div class="chart-container" [style.width.px]="variableWidth">
+  <div
+    id="tooltip"
+    #tooltip
+    [ngClass]="'tooltip-top-' + tooltipAlignment"
+    class="_tooltip"
+  >
+    <div *ngTemplateOutlet="tooltipContent"></div>
+  </div>
+</div>
+
+<figure #lineChart id="{{ id }}"></figure>
+<div class="legend-container flex padding-bottom-16">
+  <div
+    *ngFor="let legend of data; let i = index"
+    class="flex legend-item"
+    (click)="onClickLegend(legend, i)"
+    (mouseover)="onMouseOverLegend(legend, i)"
+    (mouseout)="onMouseOutLegend(legend, i)"
+  >
+    <div class="box" style="background-color: {{ legend?.color }};"></div>
+
+    <ng-container *ngIf="legend?.values?.length > 0">
+      <label
+        class="legend-text"
+        [ngClass]="
+          legend?.isDisplayed ? 'legend-text--active' : 'legend-text--inactive'
+        "
+      >
+        <span>
+          {{ legend?.name }}
+        </span>
+      </label>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #tooltipContent>
+  <div class="tooltip-row">
+    <label class="tooltip-font">
+      {{xTooltipLabel}}:<span #tooltipXValue></span>
+    </label>
+  </div>
+  <div class="tooltip-row">
+    <label class="tooltip-font">
+        {{yTooltipLabel}}:<span #tooltipYValue></span>
+    </label>
+  </div>
+</ng-template>
