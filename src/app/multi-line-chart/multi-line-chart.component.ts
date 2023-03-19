@@ -328,6 +328,10 @@ export class MultiLineChartComponent implements OnInit, AfterViewInit {
         return (isHover ? this.lineSettings?.default?.hoverStrokeWidth : this.lineSettings?.default?.strokeWidth) + 'px'
     }
 
+    getLineGroup(lineIndex: any) {
+        return this.chart.select(`.linegroup-${lineIndex}`);
+    }
+
     getLineSelection(lineIndex: any) {
         return this.chart.select(`.linepath-${lineIndex}`)
     }
@@ -399,7 +403,7 @@ export class MultiLineChartComponent implements OnInit, AfterViewInit {
     }
 
     toggleHideLine(toggle: any, lineIndex: any) {
-        return this.chart.select(`.linegroup-${lineIndex}`)
+        return this.getLineGroup(lineIndex)
             .attr("display", toggle ? null : "none")
     }
 
