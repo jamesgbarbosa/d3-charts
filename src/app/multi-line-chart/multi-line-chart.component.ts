@@ -233,75 +233,78 @@ export class MultiLineChartComponent implements OnInit, AfterViewInit {
 
         this.data.forEach((it: any, i: any) => {
             let lineGroup = this.svg.append("g")
-                .data([it?.values])
                 .attr("class", `linegroup linegroup-${i}`)
+                .data([it?.values])
+
+                lineGroup
                 .on("mouseover", (event: any, d: any) => {
                     this._positionHoveredLineToTopLayer(d)
                 })
                 .on("mouseout", () => {
                     this._revertLinesOrder();
                 })
-            let linePath = lineGroup.append("path")
-                .attr("class", `linepath linepath-${i}`)
-                .style("fill", "none")
-                .attr("d", line)
-                .attr("stroke-width", this.getLineStrokeWidth(it, false))
-                .style("stroke", (d: any) => {
-                    return it.color;
-                })
 
-            let offsetPath = lineGroup.append("path")
-                .attr("class", `offsetPath offsetpath-${i}`)
-                .style("fill", "none")
-                .attr("d", line)
-                .style("opacity", 0)
-                .attr("stroke-width", "1.2rem")
-                .style("stroke", (d: any) => {
-                    return "black"
-                })
-                .on("mouseover", (event: any) => {
-                    this._initLineStrokeOnMouseOver(i, it);
-                    let points = this.chart.selectAll(`g.${it.uniqueId}`).select("circle");
-                    points.style("opacity", 100)
-                })
-
-                .on("mouseout", () => {
-                    this._initLineStrokeOnMouseOut(i, it);
-                    let points = this.chart.selectAll(`g.${it.uniqueId}`).select("circle");
-                    points.style("opacity", 0)
-                })
-
-            let lineData = it.values;
-            lineData.forEach((d: any, index: any) => {
-                let points_class = it.uniqueId;
-                let pointGroup = lineGroup.append("g")
-                    .data([it.values])
-                    .attr("class", `focus ${points_class}`)
-                    .attr("transform", `translate(${x(d[this.xProp])}, ${y(d[this.yProp])})`)
-
-                let point = pointGroup.append("circle")
-                    .attr("r", this.pointRadius)
-                    .style("fill", (d: any) => {
+                let linePath = lineGroup.append("path")
+                    .attr("class", `linepath linepath-${i}`)
+                    .style("fill", "none")
+                    .attr("d", line)
+                    .attr("stroke-width", this.getLineStrokeWidth(it, false))
+                    .style("stroke", (d: any) => {
                         return it.color;
                     })
+
+                let offsetPath = lineGroup.append("path")
+                    .attr("class", `offsetPath offsetpath-${i}`)
+                    .style("fill", "none")
+                    .attr("d", line)
                     .style("opacity", 0)
+                    .attr("stroke-width", "1.2rem")
+                    .style("stroke", (d: any) => {
+                        return "black"
+                    })
                     .on("mouseover", (event: any) => {
-                        this._initTooltipValues(d, index);
-                        let tooltip = this.tooltipElement;
-                        tooltip.style("display", null)
-                        tooltip.style("opacity", 100)
-                        point.style("opacity", 100)
-                        let xPos = x(d[this.xProp])
-                        let yPos = y(d[this.yProp])
-                        this._positionTooltip(xPos, yPos);
                         this._initLineStrokeOnMouseOver(i, it);
+                        let points = this.chart.selectAll(`g.${it.uniqueId}`).select("circle");
+                        points.style("opacity", 100)
                     })
+
                     .on("mouseout", () => {
-                        this.tooltipElement.style("display", "none");
-                        point.style("opacity", 0)
                         this._initLineStrokeOnMouseOut(i, it);
+                        let points = this.chart.selectAll(`g.${it.uniqueId}`).select("circle");
+                        points.style("opacity", 0)
                     })
-            })
+
+                    let lineData = it.values;
+                    lineData.forEach((d: any, index: any) => {
+                        let points_class = it.uniqueId;
+                        let pointGroup = lineGroup.append("g")
+                            .data([it.values])
+                            .attr("class", `focus ${points_class}`)
+                            .attr("transform", `translate(${x(d[this.xProp])}, ${y(d[this.yProp])})`)
+
+                        let point = pointGroup.append("circle")
+                            .attr("r", this.pointRadius)
+                            .style("fill", (d: any) => {
+                                return it.color;
+                            })
+                            .style("opacity", 0)
+                            .on("mouseover", (event: any) => {
+                                this._initTooltipValues(d, index);
+                                let tooltip = this.tooltipElement;
+                                tooltip.style("display", null)
+                                tooltip.style("opacity", 100)
+                                point.style("opacity", 100)
+                                let xPos = x(d[this.xProp])
+                                let yPos = y(d[this.yProp])
+                                this._positionTooltip(xPos, yPos);
+                                this._initLineStrokeOnMouseOver(i, it);
+                            })
+                            .on("mouseout", () => {
+                                this.tooltipElement.style("display", "none");
+                                point.style("opacity", 0)
+                                this._initLineStrokeOnMouseOut(i, it);
+                            })
+                    })
 
             this.toggleHidePointsInLine(it?.isDisplayed, i);
             this.toggleHideLine(it?.isDisplayed, i);
@@ -328,15 +331,15 @@ export class MultiLineChartComponent implements OnInit, AfterViewInit {
         return (isHover ? this.lineSettings?.default?.hoverStrokeWidth : this.lineSettings?.default?.strokeWidth) + 'px'
     }
 
-    getLineGroup(lineIndex: any) {
+    getLineGroupByIndex(lineIndex: any) {
         return this.chart.select(`.linegroup-${lineIndex}`);
     }
 
-    getLineSelection(lineIndex: any) {
+    getLinePathByIndex(lineIndex: any) {
         return this.chart.select(`.linepath-${lineIndex}`)
     }
 
-    getOffsetLineSelection(lineIndex: any) {
+    getOffsetLineByIndex(lineIndex: any) {
         return this.chart.select(`.offsetPath-${lineIndex}`)
     }
 
@@ -349,12 +352,12 @@ export class MultiLineChartComponent implements OnInit, AfterViewInit {
     }
 
     _initLineStrokeOnMouseOver(lineIndex: any, data: any) {
-        this.getLineSelection(lineIndex)
+        this.getLinePathByIndex(lineIndex)
             .attr("stroke-width", this.getLineStrokeWidth(data, true))
     }
 
     _initLineStrokeOnMouseOut(lineIndex: any, data: any) {
-        this.getLineSelection(lineIndex)
+        this.getLinePathByIndex(lineIndex)
             .attr("stroke-width", this.getLineStrokeWidth(data, false))
     }
 
@@ -403,7 +406,7 @@ export class MultiLineChartComponent implements OnInit, AfterViewInit {
     }
 
     toggleHideLine(toggle: any, lineIndex: any) {
-        return this.getLineGroup(lineIndex)
+        return this.getLineGroupByIndex(lineIndex)
             .attr("display", toggle ? null : "none")
     }
 
@@ -448,7 +451,4 @@ export class MultiLineChartComponent implements OnInit, AfterViewInit {
     _kFormatter(num: any) {
         return Math.abs(num) > 999 ? Math.sign(num) * +((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num);
     }
-
-
-
 }

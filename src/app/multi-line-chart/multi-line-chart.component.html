@@ -21,7 +21,7 @@
     <div class="box" style="background-color: {{ legend?.color }};"></div>
 
     <ng-container *ngIf="legend?.values?.length > 0">
-      <label
+      <label  tabindex=0
         class="legend-text"
         [ngClass]="
           legend?.isDisplayed ? 'legend-text--active' : 'legend-text--inactive'

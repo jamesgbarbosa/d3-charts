@@ -6,6 +6,10 @@
   cursor: pointer;
 }
 
+span {
+  caret-color: transparent
+}
+
 @mixin tooltip-base {
   display: inline-block;
   position: absolute;

@@ -7,8 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'd3-app';
+  YLabel = "Number of people employed in Company ABC"
   graphData = [{
-    "name": "ABC",
+    "name": "IT",
     "values": [
       {
         "year": 2022,
@@ -41,7 +42,7 @@ export class AppComponent {
     ]
   },
   {
-    "name": "CBD",
+    "name": "Sales and Marketing",
     "values": [
       {
         "year": 2022,
@@ -73,7 +74,7 @@ export class AppComponent {
       }]
   },
   {
-    "name": "XYZ",
+    "name": "HR",
     "values": [
       {
         "year": 2022,
@@ -106,7 +107,7 @@ export class AppComponent {
     ]
   },
   {
-    "name": "HHH",
+    "name": "Role A",
     "values": [
       {
         "year": 2022,
@@ -139,7 +140,7 @@ export class AppComponent {
     ]
   },
   {
-    "name": "XZW",
+    "name": "Role B",
     "values": [
       {
         "year": 2022,
